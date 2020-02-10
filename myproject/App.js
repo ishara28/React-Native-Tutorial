@@ -1,20 +1,48 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  FlatList,
+  ScrollView,
+  TouchableOpacity
+} from "react-native";
 
 export default function App() {
-  const [name, setname] = useState("Ishara");
+  const [people, setpeople] = useState([
+    { name: "Ishara", id: 1 },
+    { name: "Janaka", id: 2 },
+    { name: "Asanka", id: 3 },
+    { name: "Dilanka", id: 4 },
+    { name: "Ayesha", id: 5 },
+    { name: "Ishanka", id: 6 },
+    { name: "Kalpa", id: 7 }
+  ]);
 
-  const clickHanlder = () => {
-    setname("Janaka")
+  const [name, setname] = useState("Kholi");
+
+  const pressHandler = id => {
+    console.log(id);
+    setpeople(prevPeople => {
+      return prevPeople.filter(person => person.id != id);
+    });
   };
+
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.boldText}>My name is {name}</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button title="Click Here" onPress={clickHanlder} />
-      </View>
+      <ScrollView>
+        <FlatList
+          numColumns={3}
+          data={people}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => pressHandler(item.id)}>
+              <Text style={styles.item}>{item.name}</Text>
+            </TouchableOpacity>
+          )}
+        />
+      </ScrollView>
+      <Text style={styles.item}>{name}</Text>
     </View>
   );
 }
@@ -23,22 +51,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    marginTop: 15
+    // alignItems: "center",
+    // justifyContent: "center"
   },
-  header: {
-    backgroundColor: "pink",
-    padding: 20
+  input: {
+    borderWidth: 1,
+    borderColor: "#777",
+    padding: 8,
+    margin: 10,
+    width: 200
   },
-  boldText: {
-    fontWeight: "bold"
-  },
-  background: {
-    backgroundColor: "yellow",
+  item: {
     padding: 10,
-    textAlign: "justify"
-  },
-  buttonContainer: {
-    marginTop: 20
+    fontSize: 25,
+    height: 80,
+    backgroundColor: "pink",
+    borderRadius: 10,
+    marginHorizontal: 15,
+    marginTop: 24
   }
 });
